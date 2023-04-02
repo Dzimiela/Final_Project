@@ -9,14 +9,14 @@ class InvalidSku(Exception):
     pass
 
 
-def is_valid_road(road, batches):
-    return road in {b.road for b in batches}
+def is_valid_road(road, rides):
+    return road in {b.road for b in rides}
 
 
 def allocate(route: OrderLine, repo: AbstractRepository, session) -> str:
-    batches = repo.list()
-    if not is_valid_road(route.road, batches):
+    rides = repo.list()
+    if not is_valid_road(route.road, rides):
         raise InvalidSku(f"Invalid road {route.road}")
-    batchref = model.allocate(route, batches)
+    batchref = model.allocate(route, rides)
     session.commit()
     return batchref

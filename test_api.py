@@ -32,14 +32,14 @@ def test_api_works(test_client):
 def test_happy_path_returns_201_and_allocated_batch(add_stock, test_client):
     road, otherroad = random_road("ball"), random_road("other")
     print(road)
-    earlybatch = random_batchref(1)
-    laterbatch = random_batchref(2)
-    otherbatch = random_batchref(3)
+    earlyride = random_batchref(1)
+    laterride = random_batchref(2)
+    otherride = random_batchref(3)
     add_stock(
         [
-            (laterbatch, road, 100, datetime.strptime("2011-01-02", "%Y-%m-%d")),
-            (earlybatch, road, 100, datetime.strptime("2011-01-01", "%Y-%m-%d")),
-            (otherbatch, otherroad, 100, None),
+            (laterride, road, 100, datetime.strptime("2011-01-02", "%Y-%m-%d")),
+            (earlyride, road, 100, datetime.strptime("2011-01-01", "%Y-%m-%d")),
+            (otherride, otherroad, 100, None),
         ]
     )
     data = {"rider": random_rider(), "road": road, "distance": 3}
@@ -47,7 +47,7 @@ def test_happy_path_returns_201_and_allocated_batch(add_stock, test_client):
     r = test_client.post(f"{url}/allocate", json=data)
     # r = requests.post(f"{url}/allocate", json=data)
     assert r.status_code == 201
-    assert r.json["batchref"] == earlybatch
+    assert r.json["batchref"] == earlyride
 
 
 def test_unhappy_path_returns_400_and_error_message(test_client):

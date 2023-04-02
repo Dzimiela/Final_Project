@@ -13,7 +13,7 @@ from sqlalchemy.orm import sessionmaker, clear_mappers
 import config
 from flask_app import create_app
 from model import Ride
-from orm import mapper_registry, start_mappers, batches
+from orm import mapper_registry, start_mappers, rides
 
 
 # chapter reworked to follow
@@ -66,7 +66,7 @@ def add_stock(session):
         print(lines)
         for ref, road, distance, eta in lines:
             session.execute(
-                insert(batches).values(
+                insert(rides).values(
                     reference=ref, road=road, miles=distance, eta=eta
                 )
             )
@@ -88,7 +88,7 @@ def add_stock(session):
             dict(batch_id=batch_id),
         )
         session.execute(
-            text("DELETE FROM batches WHERE id=:batch_id"),
+            text("DELETE FROM rides WHERE id=:batch_id"),
             dict(batch_id=batch_id),
         )
     for road in roads_added:

@@ -30,3 +30,17 @@ RED-TABLE>HWY46
 BLUE-LIPSTICK>BlueCreekRd
 DECORATIVE-WIDGET>RiverRd
 earliest>short
+in_stock_batch>mapped_road
+shipment_batch>not_mapped_road
+small_batch>short_ride
+large_batch>large_ride
+large_line>large_route
+small_line>small_route
+earlybatch>earlyride
+laterbatch>laterride
+otherbatch>otherride
+batch1>ride1
+batch2>ride2
+batches>rides
+_batches>_rides
+batch_id>DO NOT CHANGE breaks SQLlite

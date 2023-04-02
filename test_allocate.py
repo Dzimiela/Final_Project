@@ -8,14 +8,14 @@ later = tomorrow + timedelta(days=10)
 
 
 def test_prefers_current_stock_batches_to_shipments():
-    in_stock_batch = Ride("in-stock-ride", "FlandersRd", 100, eta=None)
-    shipment_batch = Ride("shipment-ride", "FlandersRd", 100, eta=tomorrow)
+    mapped_road = Ride("in-stock-ride", "FlandersRd", 100, eta=None)
+    not_mapped_road = Ride("shipment-ride", "FlandersRd", 100, eta=tomorrow)
     route = OrderLine("oref", "FlandersRd", 10)
 
-    allocate(route, [in_stock_batch, shipment_batch])
+    allocate(route, [mapped_road, not_mapped_road])
 
-    assert in_stock_batch.total_miles == 90
-    assert shipment_batch.total_miles == 100
+    assert mapped_road.total_miles == 90
+    assert not_mapped_road.total_miles == 100
 
 
 def test_prefers_earlier_batches():
@@ -32,15 +32,15 @@ def test_prefers_earlier_batches():
 
 
 def test_returns_allocated_batch_ref():
-    in_stock_batch = Ride("in-stock-ride-ref", "BigStreetCreek", 100, eta=None)
-    shipment_batch = Ride("shipment-ride-ref", "BigStreetCreek", 100, eta=tomorrow)
+    mapped_road = Ride("in-stock-ride-ref", "BigStreetCreek", 100, eta=None)
+    not_mapped_road = Ride("shipment-ride-ref", "BigStreetCreek", 100, eta=tomorrow)
     route = OrderLine("oref", "BigStreetCreek", 10)
-    allocation = allocate(route, [in_stock_batch, shipment_batch])
-    assert allocation == in_stock_batch.reference
+    allocation = allocate(route, [mapped_road, not_mapped_road])
+    assert allocation == mapped_road.reference
 
 
 def test_raises_out_of_stock_exception_if_cannot_allocate():
-    ride = Ride("batch1", "BackAlleyRoad", 10, eta=today)
+    ride = Ride("ride1", "BackAlleyRoad", 10, eta=today)
     allocate(OrderLine("James", "BackAlleyRoad", 10), [ride])
 
     with pytest.raises(RideCancelled, match="BackAlleyRoad"):

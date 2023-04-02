@@ -48,19 +48,19 @@ def test_retrieving_batches(session):
     session.execute(delete(model.Ride))
     session.execute(
         text(
-            "INSERT INTO batches (reference, road, miles, eta)"
-            ' VALUES ("batch1", "road1", 100, null)'
+            "INSERT INTO rides (reference, road, miles, eta)"
+            ' VALUES ("ride1", "road1", 100, null)'
         )
     )
     session.execute(
         text(
-            "INSERT INTO batches (reference, road, miles, eta)"
-            ' VALUES ("batch2", "road2", 200, "2011-04-11")'
+            "INSERT INTO rides (reference, road, miles, eta)"
+            ' VALUES ("ride2", "road2", 200, "2011-04-11")'
         )
     )
     expected = [
-        model.Ride("batch1", "road1", 100, eta=None),
-        model.Ride("batch2", "road2", 200, eta=date(2011, 4, 11)),
+        model.Ride("ride1", "road1", 100, eta=None),
+        model.Ride("ride2", "road2", 200, eta=date(2011, 4, 11)),
     ]
 
     assert session.query(model.Ride).all() == expected
@@ -71,13 +71,13 @@ def test_retrieving_batches(session):
 def test_saving_batches(session):
     # delete all records first
     session.execute(delete(model.Ride))
-    ride = model.Ride("batch1", "road1", 100, eta=None)
+    ride = model.Ride("ride1", "road1", 100, eta=None)
     session.add(ride)
     session.commit()
     rows = session.execute(
-        text('SELECT reference, road, miles, eta FROM "batches"')
+        text('SELECT reference, road, miles, eta FROM "rides"')
     )
-    assert list(rows) == [("batch1", "road1", 100, None)]
+    assert list(rows) == [("ride1", "road1", 100, None)]
 
     session.close()
 
@@ -86,7 +86,7 @@ def test_saving_allocations(session):
     # delete all records first
     session.execute(delete(model.Ride))
     session.execute(delete(model.OrderLine))
-    ride = model.Ride("batch1", "road1", 100, eta=None)
+    ride = model.Ride("ride1", "road1", 100, eta=None)
     route = model.OrderLine("James", "road1", 10)
     ride.allocate(route)
     session.add(ride)
@@ -116,13 +116,13 @@ def test_retrieving_allocations(session):
     )
     session.execute(
         text(
-            "INSERT INTO batches (reference, road, miles, eta)"
-            ' VALUES ("batch1", "road1", 100, null)'
+            "INSERT INTO rides (reference, road, miles, eta)"
+            ' VALUES ("ride1", "road1", 100, null)'
         )
     )
     [[bid]] = session.execute(
-        text("SELECT id FROM batches WHERE reference=:ref AND road=:road"),
-        dict(ref="batch1", road="road1"),
+        text("SELECT id FROM rides WHERE reference=:ref AND road=:road"),
+        dict(ref="ride1", road="road1"),
     )
     session.execute(
         text("INSERT INTO allocations (orderline_id, batch_id) VALUES (:olid, :bid)"),

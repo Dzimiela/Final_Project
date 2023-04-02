@@ -8,9 +8,9 @@ class RideCancelled(Exception):
     pass
 
 
-def allocate(route: OrderLine, batches: List[Ride]) -> str:
+def allocate(route: OrderLine, rides: List[Ride]) -> str:
     try:
-        ride = next(b for b in sorted(batches) if b.can_allocate(route))
+        ride = next(b for b in sorted(rides) if b.can_allocate(route))
         ride.allocate(route)
         return ride.reference
     except StopIteration:

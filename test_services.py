@@ -5,17 +5,17 @@ import services
 
 
 class FakeRepository(repository.AbstractRepository):
-    def __init__(self, batches):
-        self._batches = set(batches)
+    def __init__(self, rides):
+        self._rides = set(rides)
 
     def add(self, ride):
-        self._batches.add(ride)
+        self._rides.add(ride)
 
     def get(self, reference):
-        return next(b for b in self._batches if b.reference == reference)
+        return next(b for b in self._rides if b.reference == reference)
 
     def list(self):
-        return list(self._batches)
+        return list(self._rides)
 
 
 class FakeSession:

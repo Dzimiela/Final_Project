@@ -19,13 +19,13 @@ def make_batch_and_line(road, batch_distance, line_distance):
 
 
 def test_can_allocate_if_available_greater_than_required():
-    large_batch, small_line = make_batch_and_line("Morning Ride", 20, 2)
-    assert large_batch.can_allocate(small_line)
+    large_ride, small_route = make_batch_and_line("Morning Ride", 20, 2)
+    assert large_ride.can_allocate(small_route)
 
 
 def test_cannot_allocate_if_available_smaller_than_required():
-    small_batch, large_line = make_batch_and_line("Morning Ride", 2, 20)
-    assert small_batch.can_allocate(large_line) is False
+    short_ride, large_route = make_batch_and_line("Morning Ride", 2, 20)
+    assert short_ride.can_allocate(large_route) is False
 
 
 def test_can_allocate_if_available_equal_to_required():
