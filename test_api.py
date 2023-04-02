@@ -15,7 +15,7 @@ def random_road(name=""):
 
 
 def random_batchref(name=""):
-    return f"batch-{name}-{random_suffix()}"
+    return f"ride-{name}-{random_suffix()}"
 
 
 def random_rider(name=""):

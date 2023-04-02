@@ -71,8 +71,8 @@ def test_retrieving_batches(session):
 def test_saving_batches(session):
     # delete all records first
     session.execute(delete(model.Batch))
-    batch = model.Batch("batch1", "road1", 100, eta=None)
-    session.add(batch)
+    ride = model.Batch("batch1", "road1", 100, eta=None)
+    session.add(ride)
     session.commit()
     rows = session.execute(
         text('SELECT reference, road, miles, eta FROM "batches"')
@@ -86,17 +86,17 @@ def test_saving_allocations(session):
     # delete all records first
     session.execute(delete(model.Batch))
     session.execute(delete(model.OrderLine))
-    batch = model.Batch("batch1", "road1", 100, eta=None)
-    line = model.OrderLine("order1", "road1", 10)
-    batch.allocate(line)
-    session.add(batch)
+    ride = model.Batch("batch1", "road1", 100, eta=None)
+    route = model.OrderLine("order1", "road1", 10)
+    ride.allocate(route)
+    session.add(ride)
     session.commit()
     rows = list(
         session.execute(
             text('SELECT orderline_id, batch_id FROM "allocations"')
         ).first()
     )
-    assert rows == [batch.id, line.id]
+    assert rows == [ride.id, route.id]
 
     session.close()
 
@@ -129,8 +129,8 @@ def test_retrieving_allocations(session):
         dict(olid=olid, bid=bid),
     )
 
-    batch = session.query(model.Batch).one()
+    ride = session.query(model.Batch).one()
 
-    assert batch._allocations == {model.OrderLine("order1", "road1", 12)}
+    assert ride._allocations == {model.OrderLine("order1", "road1", 12)}
 
     session.close()

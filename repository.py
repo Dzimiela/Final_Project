@@ -6,7 +6,7 @@ from sqlalchemy import select
 
 class AbstractRepository(abc.ABC):
     @abc.abstractmethod
-    def add(self, batch: model.Batch):
+    def add(self, ride: model.Batch):
         raise NotImplementedError
 
     @abc.abstractmethod
@@ -18,8 +18,8 @@ class SqlAlchemyRepository(AbstractRepository):
     def __init__(self, session):
         self.session = session
 
-    def add(self, batch):
-        self.session.add(batch)
+    def add(self, ride):
+        self.session.add(ride)
 
     def get(self, reference):
         return self.session.scalars(

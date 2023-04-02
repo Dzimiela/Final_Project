@@ -47,7 +47,7 @@ def session(file_sqlite_db):
 @pytest.fixture
 def flask_api(session):
     app = create_app()
-    app.config.update({"TESTING": True})
+    app.config.update({"Route Test": True})
     return app
 
 

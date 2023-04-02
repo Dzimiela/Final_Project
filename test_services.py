@@ -8,8 +8,8 @@ class FakeRepository(repository.AbstractRepository):
     def __init__(self, batches):
         self._batches = set(batches)
 
-    def add(self, batch):
-        self._batches.add(batch)
+    def add(self, ride):
+        self._batches.add(ride)
 
     def get(self, reference):
         return next(b for b in self._batches if b.reference == reference)
@@ -26,28 +26,28 @@ class FakeSession:
 
 
 def test_returns_allocation():
-    line = model.OrderLine("o1", "COMPLICATED-LAMP", 10)
-    batch = model.Batch("b1", "COMPLICATED-LAMP", 100, eta=None)
-    repo = FakeRepository([batch])
+    route = model.OrderLine("o1", "COMPLICATED-LAMP", 10)
+    ride = model.Batch("b1", "COMPLICATED-LAMP", 100, eta=None)
+    repo = FakeRepository([ride])
 
-    result = services.allocate(line, repo, FakeSession())
+    result = services.allocate(route, repo, FakeSession())
     assert result == "b1"
 
 
 def test_error_for_invalid_road():
-    line = model.OrderLine("o1", "NONEXISTENTSKU", 10)
-    batch = model.Batch("b1", "AREALSKU", 100, eta=None)
-    repo = FakeRepository([batch])
+    route = model.OrderLine("o1", "NONEXISTENTSKU", 10)
+    ride = model.Batch("b1", "AREALSKU", 100, eta=None)
+    repo = FakeRepository([ride])
 
     with pytest.raises(services.InvalidSku, match="Invalid road NONEXISTENTSKU"):
-        services.allocate(line, repo, FakeSession())
+        services.allocate(route, repo, FakeSession())
 
 
 def test_commits():
-    line = model.OrderLine("o1", "OMINOUS-MIRROR", 10)
-    batch = model.Batch("b1", "OMINOUS-MIRROR", 100, eta=None)
-    repo = FakeRepository([batch])
+    route = model.OrderLine("o1", "OMINOUS-MIRROR", 10)
+    ride = model.Batch("b1", "OMINOUS-MIRROR", 100, eta=None)
+    repo = FakeRepository([ride])
     session = FakeSession()
 
-    services.allocate(line, repo, session)
+    services.allocate(route, repo, session)
     assert session.committed is True

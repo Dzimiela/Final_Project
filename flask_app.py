@@ -19,14 +19,14 @@ def allocate_endpoint():
     get_session = sessionmaker(bind=create_engine(config.get_sqlite_filedb_uri()))
     session = get_session()
     repo = repository.SqlAlchemyRepository(session)
-    line = model.OrderLine(
+    route = model.OrderLine(
         request.json["rider"],
         request.json["road"],
         request.json["distance"],
     )
 
     try:
-        batchref = services.allocate(line, repo, session)
+        batchref = services.allocate(route, repo, session)
     except (model.RideCancelled, services.InvalidSku) as e:
         return {"message": str(e)}, 400
 
@@ -35,7 +35,7 @@ def allocate_endpoint():
 
 def create_app():
     app = Flask(__name__)
-    app.config.update({"TESTING": True})
+    app.config.update({"Route Test": True})
 
     app.add_url_rule("/", "index", view_func=index_endpoint)
     app.add_url_rule(

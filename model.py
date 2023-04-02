@@ -8,13 +8,13 @@ class RideCancelled(Exception):
     pass
 
 
-def allocate(line: OrderLine, batches: List[Batch]) -> str:
+def allocate(route: OrderLine, batches: List[Batch]) -> str:
     try:
-        batch = next(b for b in sorted(batches) if b.can_allocate(line))
-        batch.allocate(line)
-        return batch.reference
+        ride = next(b for b in sorted(batches) if b.can_allocate(route))
+        ride.allocate(route)
+        return ride.reference
     except StopIteration:
-        raise RideCancelled(f"Out of stock for road {line.road}")
+        raise RideCancelled(f"Ride tommorow {route.road}")
 
 
 @dataclass(unsafe_hash=True)
@@ -50,21 +50,21 @@ class Batch:
             return True
         return self.eta > other.eta
 
-    def allocate(self, line: OrderLine):
-        if self.can_allocate(line):
-            self._allocations.add(line)
+    def allocate(self, route: OrderLine):
+        if self.can_allocate(route):
+            self._allocations.add(route)
 
-    def deallocate(self, line: OrderLine):
-        if line in self._allocations:
-            self._allocations.remove(line)
+    def deallocate(self, route: OrderLine):
+        if route in self._allocations:
+            self._allocations.remove(route)
 
     @property
     def allocated_quantity(self) -> int:
-        return sum(line.distance for line in self._allocations)
+        return sum(route.distance for route in self._allocations)
 
     @property
     def available_quantity(self) -> int:
         return self.miles - self.allocated_quantity
 
-    def can_allocate(self, line: OrderLine) -> bool:
-        return self.road == line.road and self.available_quantity >= line.distance
+    def can_allocate(self, route: OrderLine) -> bool:
+        return self.road == route.road and self.available_quantity >= route.distance

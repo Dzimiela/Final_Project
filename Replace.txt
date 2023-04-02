@@ -1,8 +1,13 @@
-RideCancelled>RideCancelled
+OutOfStock>RideCancelled
 id> DO NOT CHANGED autoincrement=True
 eta> DO NOT CHANGED brakes tests
-distance>distance
-miles>miles
-road>road
-rider>rider
+qty>distance
+_purchased_quantity>miles
+sku>road
+orderid>rider
 allocations.db>routes.db (big fix for DB errors)
+Out of stock for road>Ride tommorow
+TESTING>Route Test
+ELEGANT-LAMP>Morning Ride
+batch>ride
+line>route

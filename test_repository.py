@@ -10,10 +10,10 @@ def test_repository_can_save_a_batch(session):
     # delete all records first
     session.execute(delete(model.Batch))
     session.execute(delete(model.OrderLine))
-    batch = model.Batch("batch1", "RUSTY-SOAPDISH", 100, eta=None)
+    ride = model.Batch("batch1", "RUSTY-SOAPDISH", 100, eta=None)
 
     repo = repository.SqlAlchemyRepository(session)
-    repo.add(batch)
+    repo.add(ride)
     session.commit()
 
     rows = session.execute(
