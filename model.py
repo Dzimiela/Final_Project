@@ -8,7 +8,7 @@ class RideCancelled(Exception):
     pass
 
 
-def allocate(route: OrderLine, rides: List[Ride]) -> str:
+def allocate(route: NewRoute, rides: List[Ride]) -> str:
     try:
         ride = next(b for b in sorted(rides) if b.can_allocate(route))
         ride.allocate(route)
@@ -18,7 +18,7 @@ def allocate(route: OrderLine, rides: List[Ride]) -> str:
 
 
 @dataclass(unsafe_hash=True)
-class OrderLine:
+class NewRoute:
     rider: str
     road: str
     distance: int
@@ -30,7 +30,7 @@ class Ride:
         self.road = road
         self.eta = eta
         self.miles = distance
-        self._allocations = set()  # type: Set[OrderLine]
+        self._allocations = set()  # type: Set[NewRoute]
 
     def __repr__(self):
         return f"<Ride {self.reference}>"
@@ -50,11 +50,11 @@ class Ride:
             return True
         return self.eta > other.eta
 
-    def allocate(self, route: OrderLine):
+    def allocate(self, route: NewRoute):
         if self.can_allocate(route):
             self._allocations.add(route)
 
-    def deallocate(self, route: OrderLine):
+    def deallocate(self, route: NewRoute):
         if route in self._allocations:
             self._allocations.remove(route)
 
@@ -66,5 +66,5 @@ class Ride:
     def total_miles(self) -> int:
         return self.miles - self.allocated_quantity
 
-    def can_allocate(self, route: OrderLine) -> bool:
+    def can_allocate(self, route: NewRoute) -> bool:
         return self.road == route.road and self.total_miles >= route.distance

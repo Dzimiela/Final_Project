@@ -57,14 +57,14 @@ def test_client(flask_api):
 
 
 @pytest.fixture
-def add_stock(session):
+def add_ride(session):
     # take care and note that this fixture takes care of adding in records to the database.
     batches_added = set()
     roads_added = set()
 
-    def _add_stock(lines):
-        print(lines)
-        for ref, road, distance, eta in lines:
+    def _add_stock(routes):
+        print(routes)
+        for ref, road, distance, eta in routes:
             session.execute(
                 insert(rides).values(
                     reference=ref, road=road, miles=distance, eta=eta
@@ -93,7 +93,7 @@ def add_stock(session):
         )
     for road in roads_added:
         session.execute(
-            text("DELETE FROM order_lines WHERE road=:road"),
+            text("DELETE FROM new_routes WHERE road=:road"),
             dict(road=road),
         )
 

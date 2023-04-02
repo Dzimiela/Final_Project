@@ -19,7 +19,7 @@ def allocate_endpoint():
     get_session = sessionmaker(bind=create_engine(config.get_sqlite_filedb_uri()))
     session = get_session()
     repo = repository.SqlAlchemyRepository(session)
-    route = model.OrderLine(
+    route = model.NewRoute(
         request.json["rider"],
         request.json["road"],
         request.json["distance"],

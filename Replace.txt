@@ -44,3 +44,12 @@ batch2>ride2
 batches>rides
 _batches>_rides
 batch_id>DO NOT CHANGE breaks SQLlite
+lines>routes
+order_lines>new_routes
+OrderLine>NewRoute
+latest>long
+90>15
+100>40
+add_stock>add_ride
+RUSTY-SOAPDISH>DogSquatRoad
+GENERIC-SOFA>HairyCatRoad

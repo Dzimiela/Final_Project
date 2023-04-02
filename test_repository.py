@@ -9,8 +9,8 @@ from sqlalchemy.sql import text
 def test_repository_can_save_a_batch(session):
     # delete all records first
     session.execute(delete(model.Ride))
-    session.execute(delete(model.OrderLine))
-    ride = model.Ride("ride1", "RUSTY-SOAPDISH", 100, eta=None)
+    session.execute(delete(model.NewRoute))
+    ride = model.Ride("ride1", "DogSquatRoad", 40, eta=None)
 
     repo = repository.SqlAlchemyRepository(session)
     repo.add(ride)
@@ -19,7 +19,7 @@ def test_repository_can_save_a_batch(session):
     rows = session.execute(
         text('SELECT reference, road, miles, eta FROM "rides"')
     )
-    assert list(rows) == [("ride1", "RUSTY-SOAPDISH", 100, None)]
+    assert list(rows) == [("ride1", "DogSquatRoad", 40, None)]
 
     session.commit()
 
@@ -27,13 +27,13 @@ def test_repository_can_save_a_batch(session):
 def insert_order_line(session):
     session.execute(
         text(
-            "INSERT INTO order_lines (rider, road, distance)"
-            ' VALUES ("James", "GENERIC-SOFA", 12)'
+            "INSERT INTO new_routes (rider, road, distance)"
+            ' VALUES ("James", "HairyCatRoad", 12)'
         )
     )
     [[orderline_id]] = session.execute(
-        text("SELECT id FROM order_lines WHERE rider=:rider AND road=:road"),
-        dict(rider="James", road="GENERIC-SOFA"),
+        text("SELECT id FROM new_routes WHERE rider=:rider AND road=:road"),
+        dict(rider="James", road="HairyCatRoad"),
     )
     return orderline_id
 
@@ -42,12 +42,12 @@ def insert_batch(session, batch_id):
     session.execute(
         text(
             "INSERT INTO rides (reference, road, miles, eta)"
-            ' VALUES (:batch_id, "GENERIC-SOFA", 100, null)',
+            ' VALUES (:batch_id, "HairyCatRoad", 40, null)',
         ),
         dict(batch_id=batch_id),
     )
     [[batch_id]] = session.execute(
-        text('SELECT id FROM rides WHERE reference=:batch_id AND road="GENERIC-SOFA"'),
+        text('SELECT id FROM rides WHERE reference=:batch_id AND road="HairyCatRoad"'),
         dict(batch_id=batch_id),
     )
     return batch_id
@@ -66,7 +66,7 @@ def insert_allocation(session, orderline_id, batch_id):
 def test_repository_can_retrieve_a_batch_with_allocations(session):
     # delete all records first
     session.execute(delete(model.Ride))
-    session.execute(delete(model.OrderLine))
+    session.execute(delete(model.NewRoute))
     orderline_id = insert_order_line(session)
     batch1_id = insert_batch(session, "ride1")
     insert_batch(session, "ride2")
@@ -75,10 +75,10 @@ def test_repository_can_retrieve_a_batch_with_allocations(session):
     repo = repository.SqlAlchemyRepository(session)
     retrieved = repo.get("ride1")
 
-    expected = model.Ride("ride1", "GENERIC-SOFA", 100, eta=None)
+    expected = model.Ride("ride1", "HairyCatRoad", 40, eta=None)
     assert retrieved == expected  # Ride.__eq__ only compares reference
     assert retrieved.road == expected.road
     assert retrieved.miles == expected.miles
     assert retrieved._allocations == {
-        model.OrderLine("James", "GENERIC-SOFA", 12),
+        model.NewRoute("James", "HairyCatRoad", 12),
     }

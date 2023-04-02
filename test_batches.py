@@ -1,10 +1,10 @@
 from datetime import date
-from model import Ride, OrderLine
+from model import Ride, NewRoute
 
 
 def test_allocating_to_a_batch_reduces_the_available_quantity():
     ride = Ride("ride-001", "ShortRideAroundHouse", distance=20, eta=date.today())
-    route = OrderLine("order-ref", "ShortRideAroundHouse", 2)
+    route = NewRoute("order-ref", "ShortRideAroundHouse", 2)
 
     ride.allocate(route)
 
@@ -14,7 +14,7 @@ def test_allocating_to_a_batch_reduces_the_available_quantity():
 def make_batch_and_line(road, batch_distance, line_distance):
     return (
         Ride("ride-001", road, batch_distance, eta=date.today()),
-        OrderLine("order-123", road, line_distance),
+        NewRoute("order-123", road, line_distance),
     )
 
 
@@ -34,8 +34,8 @@ def test_can_allocate_if_available_equal_to_required():
 
 
 def test_cannot_allocate_if_roads_do_not_match():
-    ride = Ride("ride-001", "COLD-RIDE", 100, eta=None)
-    different_road_line = OrderLine("order-123", "SUNDAY_FUNDAY_RIDE", 10)
+    ride = Ride("ride-001", "COLD-RIDE", 40, eta=None)
+    different_road_line = NewRoute("order-123", "SUNDAY_FUNDAY_RIDE", 10)
     assert ride.can_allocate(different_road_line) is False
 
 

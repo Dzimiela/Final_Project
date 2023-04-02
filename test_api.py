@@ -29,17 +29,17 @@ def test_api_works(test_client):
     assert b"HELLO FROM THE API" in r.data
 
 
-def test_happy_path_returns_201_and_allocated_batch(add_stock, test_client):
+def test_happy_path_returns_201_and_allocated_batch(add_ride, test_client):
     road, otherroad = random_road("ball"), random_road("other")
     print(road)
     earlyride = random_batchref(1)
     laterride = random_batchref(2)
     otherride = random_batchref(3)
-    add_stock(
+    add_ride(
         [
-            (laterride, road, 100, datetime.strptime("2011-01-02", "%Y-%m-%d")),
-            (earlyride, road, 100, datetime.strptime("2011-01-01", "%Y-%m-%d")),
-            (otherride, otherroad, 100, None),
+            (laterride, road, 40, datetime.strptime("2011-01-02", "%Y-%m-%d")),
+            (earlyride, road, 40, datetime.strptime("2011-01-01", "%Y-%m-%d")),
+            (otherride, otherroad, 40, None),
         ]
     )
     data = {"rider": random_rider(), "road": road, "distance": 3}

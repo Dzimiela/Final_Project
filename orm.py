@@ -7,8 +7,8 @@ import model
 # using SQLAlchemy 2.0-style imperative mapping
 mapper_registry = registry()
 
-order_lines = Table(
-    "order_lines",
+new_routes = Table(
+    "new_routes",
     mapper_registry.metadata,
     Column("id", Integer, primary_key=True, autoincrement=True),
     Column("road", String(255)),
@@ -30,13 +30,13 @@ allocations = Table(
     "allocations",
     mapper_registry.metadata,
     Column("id", Integer, primary_key=True, autoincrement=True),
-    Column("orderline_id", ForeignKey("order_lines.id")),
+    Column("orderline_id", ForeignKey("new_routes.id")),
     Column("batch_id", ForeignKey("rides.id")),
 )
 
 
 def start_mappers():
-    lines_mapper = mapper_registry.map_imperatively(model.OrderLine, order_lines)
+    lines_mapper = mapper_registry.map_imperatively(model.NewRoute, new_routes)
     mapper_registry.map_imperatively(
         model.Ride,
         rides,
