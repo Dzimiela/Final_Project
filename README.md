@@ -1,7 +1,7 @@
 # Final_Project
 Class GitHub: https://github.com/ahuimanu/CIDM6330
 
-
+P&G: https://www.cosmicpython.com/book/introduction.html
 
 Learn Python Programming: https://pythonbasics.org/
 
