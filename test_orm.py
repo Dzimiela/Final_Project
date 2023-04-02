@@ -1,4 +1,4 @@
-from domain import model
+import model
 from datetime import date
 
 from sqlalchemy import select, delete

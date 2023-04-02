@@ -1,6 +1,6 @@
 # pylint: disable=protected-access
-from domain import model
-from adapters import repository
+import model
+import repository
 
 from sqlalchemy import select, delete
 from sqlalchemy.sql import text

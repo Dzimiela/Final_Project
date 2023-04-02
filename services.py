@@ -1,10 +1,8 @@
 from __future__ import annotations
-from typing import Optional
-from datetime import date
 
-from domain import model
-from domain.model import OrderLine
-from adapters.repository import AbstractRepository
+import model
+from model import OrderLine
+from repository import AbstractRepository
 
 
 class InvalidSku(Exception):
@@ -13,18 +11,6 @@ class InvalidSku(Exception):
 
 def is_valid_sku(sku, batches):
     return sku in {b.sku for b in batches}
-
-
-def add_batch(
-    ref: str,
-    sku: str,
-    qty: int,
-    eta: Optional[date],
-    repo: AbstractRepository,
-    session,
-) -> None:
-    repo.add(model.Batch(ref, sku, qty, eta))
-    session.commit()
 
 
 def allocate(line: OrderLine, repo: AbstractRepository, session) -> str:

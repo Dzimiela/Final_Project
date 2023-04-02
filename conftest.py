@@ -1,16 +1,19 @@
 # pylint: disable=redefined-outer-name
+import time
 from pathlib import Path
 
 import pytest
+import requests
+from requests.exceptions import ConnectionError
 from sqlalchemy.exc import OperationalError
 from sqlalchemy import create_engine
 from sqlalchemy.sql import delete, insert, select, text
 from sqlalchemy.orm import sessionmaker, clear_mappers
 
 import config
-from entrypoints.flask_app import create_app
-from domain.model import Batch
-from adapters.orm import mapper_registry, start_mappers, batches
+from flask_app import create_app
+from model import Batch
+from orm import mapper_registry, start_mappers, batches
 
 
 # chapter reworked to follow

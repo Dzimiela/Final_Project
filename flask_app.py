@@ -3,10 +3,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, clear_mappers
 
 import config
-from domain import model
-from adapters import orm
-from adapters import repository
-from service_layer import services
+import model
+import orm
+import repository
+import services
 
 
 def index_endpoint():

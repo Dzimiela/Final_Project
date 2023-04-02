@@ -1,7 +1,7 @@
 import pytest
-from domain import model
-from adapters import repository
-from service_layer import services
+import model
+import repository
+import services
 
 
 class FakeRepository(repository.AbstractRepository):
@@ -23,13 +23,6 @@ class FakeSession:
 
     def commit(self):
         self.committed = True
-
-
-def test_add_batch():
-    repo, session = FakeRepository([]), FakeSession()
-    services.add_batch("b1", "CRUNCHY-ARMCHAIR", 100, None, repo, session)
-    assert repo.get("b1") is not None
-    assert session.committed
 
 
 def test_returns_allocation():

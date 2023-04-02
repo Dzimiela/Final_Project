@@ -1,7 +1,7 @@
 from sqlalchemy import Table, MetaData, Column, Integer, String, Date, ForeignKey
 from sqlalchemy.orm import registry, relationship
 
-from domain import model
+import model
 
 # https://docs.sqlalchemy.org/en/20/orm/mapping_styles.html#imperative-mapping
 # using SQLAlchemy 2.0-style imperative mapping
