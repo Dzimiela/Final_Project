@@ -27,7 +27,7 @@ class FakeSession:
 
 def test_returns_allocation():
     route = model.OrderLine("o1", "COMPLICATED-LAMP", 10)
-    ride = model.Batch("b1", "COMPLICATED-LAMP", 100, eta=None)
+    ride = model.Ride("b1", "COMPLICATED-LAMP", 100, eta=None)
     repo = FakeRepository([ride])
 
     result = services.allocate(route, repo, FakeSession())
@@ -36,7 +36,7 @@ def test_returns_allocation():
 
 def test_error_for_invalid_road():
     route = model.OrderLine("o1", "NONEXISTENTSKU", 10)
-    ride = model.Batch("b1", "AREALSKU", 100, eta=None)
+    ride = model.Ride("b1", "AREALSKU", 100, eta=None)
     repo = FakeRepository([ride])
 
     with pytest.raises(services.InvalidSku, match="Invalid road NONEXISTENTSKU"):
@@ -45,7 +45,7 @@ def test_error_for_invalid_road():
 
 def test_commits():
     route = model.OrderLine("o1", "OMINOUS-MIRROR", 10)
-    ride = model.Batch("b1", "OMINOUS-MIRROR", 100, eta=None)
+    ride = model.Ride("b1", "OMINOUS-MIRROR", 100, eta=None)
     repo = FakeRepository([ride])
     session = FakeSession()
 

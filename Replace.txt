@@ -11,3 +11,22 @@ TESTING>Route Test
 ELEGANT-LAMP>Morning Ride
 batch>ride
 line>route
+RETRO-CLOCK>FlandersRd
+MINIMALIST-SPOON>RoubaixStreet
+HIGHBROW-POSTER>BigStreetCreek
+SMALL-FORK>BackAlleyRoad
+Batch>Ride
+EXPENSIVE-TOASTER>SUNDAY_FUNDAY_RIDE
+UNCOMFORTABLE-CHAIR>COLD-RIDE
+ANGULAR-DESK>Friday-Night-Ride
+EXPENSIVE-FOOTSTOOL>Pre-Race-Ride
+DECORATIVE-TRINKET>Night-Ride
+available_quantity>total_miles
+SMALL-TABLE>ShortRideAroundHouse
+order1>James
+order2>Steve
+RED-CHAIR>HWY1863
+RED-TABLE>HWY46
+BLUE-LIPSTICK>BlueCreekRd
+DECORATIVE-WIDGET>RiverRd
+earliest>short

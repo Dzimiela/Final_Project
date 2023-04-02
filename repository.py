@@ -6,11 +6,11 @@ from sqlalchemy import select
 
 class AbstractRepository(abc.ABC):
     @abc.abstractmethod
-    def add(self, ride: model.Batch):
+    def add(self, ride: model.Ride):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def get(self, reference) -> model.Batch:
+    def get(self, reference) -> model.Ride:
         raise NotImplementedError
 
 
@@ -23,8 +23,8 @@ class SqlAlchemyRepository(AbstractRepository):
 
     def get(self, reference):
         return self.session.scalars(
-            select(model.Batch).filter_by(reference=reference)
+            select(model.Ride).filter_by(reference=reference)
         ).one()
 
     def list(self):
-        return self.session.scalars(select(model.Batch)).all()
+        return self.session.scalars(select(model.Ride)).all()

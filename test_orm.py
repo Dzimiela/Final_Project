@@ -12,15 +12,15 @@ def test_orderline_mapper_can_load_lines(session):
     session.execute(
         text(
             "INSERT INTO order_lines (rider, road, distance) VALUES "
-            '("order1", "RED-CHAIR", 12),'
-            '("order1", "RED-TABLE", 13),'
-            '("order2", "BLUE-LIPSTICK", 14)'
+            '("James", "HWY1863", 12),'
+            '("James", "HWY46", 13),'
+            '("Steve", "BlueCreekRd", 14)'
         )
     )
     expected = [
-        model.OrderLine("order1", "RED-CHAIR", 12),
-        model.OrderLine("order1", "RED-TABLE", 13),
-        model.OrderLine("order2", "BLUE-LIPSTICK", 14),
+        model.OrderLine("James", "HWY1863", 12),
+        model.OrderLine("James", "HWY46", 13),
+        model.OrderLine("Steve", "BlueCreekRd", 14),
     ]
     # assert session.query(model.OrderLine).all() == expected
     outcome = session.scalars(select(model.OrderLine)).all()
@@ -33,19 +33,19 @@ def test_orderline_mapper_can_save_lines(session):
     # delete all records first
     session.execute(delete(model.OrderLine))
 
-    new_line = model.OrderLine("order1", "DECORATIVE-WIDGET", 12)
+    new_line = model.OrderLine("James", "RiverRd", 12)
     session.add(new_line)
     session.commit()
 
     rows = list(session.execute(text('SELECT rider, road, distance FROM "order_lines"')))
-    assert rows == [("order1", "DECORATIVE-WIDGET", 12)]
+    assert rows == [("James", "RiverRd", 12)]
 
     session.close()
 
 
 def test_retrieving_batches(session):
     # delete all records first
-    session.execute(delete(model.Batch))
+    session.execute(delete(model.Ride))
     session.execute(
         text(
             "INSERT INTO batches (reference, road, miles, eta)"
@@ -59,19 +59,19 @@ def test_retrieving_batches(session):
         )
     )
     expected = [
-        model.Batch("batch1", "road1", 100, eta=None),
-        model.Batch("batch2", "road2", 200, eta=date(2011, 4, 11)),
+        model.Ride("batch1", "road1", 100, eta=None),
+        model.Ride("batch2", "road2", 200, eta=date(2011, 4, 11)),
     ]
 
-    assert session.query(model.Batch).all() == expected
+    assert session.query(model.Ride).all() == expected
 
     session.close()
 
 
 def test_saving_batches(session):
     # delete all records first
-    session.execute(delete(model.Batch))
-    ride = model.Batch("batch1", "road1", 100, eta=None)
+    session.execute(delete(model.Ride))
+    ride = model.Ride("batch1", "road1", 100, eta=None)
     session.add(ride)
     session.commit()
     rows = session.execute(
@@ -84,10 +84,10 @@ def test_saving_batches(session):
 
 def test_saving_allocations(session):
     # delete all records first
-    session.execute(delete(model.Batch))
+    session.execute(delete(model.Ride))
     session.execute(delete(model.OrderLine))
-    ride = model.Batch("batch1", "road1", 100, eta=None)
-    route = model.OrderLine("order1", "road1", 10)
+    ride = model.Ride("batch1", "road1", 100, eta=None)
+    route = model.OrderLine("James", "road1", 10)
     ride.allocate(route)
     session.add(ride)
     session.commit()
@@ -103,16 +103,16 @@ def test_saving_allocations(session):
 
 def test_retrieving_allocations(session):
     # delete all records first
-    session.execute(delete(model.Batch))
+    session.execute(delete(model.Ride))
     session.execute(delete(model.OrderLine))
     session.execute(
         text(
-            'INSERT INTO order_lines (rider, road, distance) VALUES ("order1", "road1", 12)'
+            'INSERT INTO order_lines (rider, road, distance) VALUES ("James", "road1", 12)'
         )
     )
     [[olid]] = session.execute(
         text("SELECT id FROM order_lines WHERE rider=:rider AND road=:road"),
-        dict(rider="order1", road="road1"),
+        dict(rider="James", road="road1"),
     )
     session.execute(
         text(
@@ -129,8 +129,8 @@ def test_retrieving_allocations(session):
         dict(olid=olid, bid=bid),
     )
 
-    ride = session.query(model.Batch).one()
+    ride = session.query(model.Ride).one()
 
-    assert ride._allocations == {model.OrderLine("order1", "road1", 12)}
+    assert ride._allocations == {model.OrderLine("James", "road1", 12)}
 
     session.close()

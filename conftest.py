@@ -12,7 +12,7 @@ from sqlalchemy.orm import sessionmaker, clear_mappers
 
 import config
 from flask_app import create_app
-from model import Batch
+from model import Ride
 from orm import mapper_registry, start_mappers, batches
 
 
@@ -71,7 +71,7 @@ def add_stock(session):
                 )
             )
             batch_id = session.scalars(
-                select(Batch).where(Batch.reference == ref).where(Batch.road == road)
+                select(Ride).where(Ride.reference == ref).where(Ride.road == road)
             ).first()
             print(batch_id.reference)
             print(batch_id.road)

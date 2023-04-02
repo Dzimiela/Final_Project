@@ -8,7 +8,7 @@ class RideCancelled(Exception):
     pass
 
 
-def allocate(route: OrderLine, batches: List[Batch]) -> str:
+def allocate(route: OrderLine, batches: List[Ride]) -> str:
     try:
         ride = next(b for b in sorted(batches) if b.can_allocate(route))
         ride.allocate(route)
@@ -24,7 +24,7 @@ class OrderLine:
     distance: int
 
 
-class Batch:
+class Ride:
     def __init__(self, ref: str, road: str, distance: int, eta: Optional[date]):
         self.reference = ref
         self.road = road
@@ -33,10 +33,10 @@ class Batch:
         self._allocations = set()  # type: Set[OrderLine]
 
     def __repr__(self):
-        return f"<Batch {self.reference}>"
+        return f"<Ride {self.reference}>"
 
     def __eq__(self, other):
-        if not isinstance(other, Batch):
+        if not isinstance(other, Ride):
             return False
         return other.reference == self.reference
 
@@ -63,8 +63,8 @@ class Batch:
         return sum(route.distance for route in self._allocations)
 
     @property
-    def available_quantity(self) -> int:
+    def total_miles(self) -> int:
         return self.miles - self.allocated_quantity
 
     def can_allocate(self, route: OrderLine) -> bool:
-        return self.road == route.road and self.available_quantity >= route.distance
+        return self.road == route.road and self.total_miles >= route.distance
