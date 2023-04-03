@@ -13,6 +13,7 @@ new_routes = Table(
     Column("id", Integer, primary_key=True, autoincrement=True),
     Column("road", String(255)),
     Column("distance", Integer, nullable=False),
+    Column("mph", Integer, nullable=False),
     Column("rider", String(255)),
 )
 
@@ -23,6 +24,7 @@ rides = Table(
     Column("reference", String(255)),
     Column("road", String(255)),
     Column("miles", Integer, nullable=False),
+    Column("mph", Integer, nullable=False),
     Column("eta", Date, nullable=True),
 )
 
