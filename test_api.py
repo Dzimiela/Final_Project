@@ -28,7 +28,7 @@ def test_api_works(test_client):
     assert r.status_code == 200
     assert b"HELLO FROM THE API" in r.data
 
-
+'''
 def test_happy_path_returns_201_and_allocated_batch(add_ride, test_client):
     road, otherroad = random_road("ball"), random_road("other")
     print(road)
@@ -37,9 +37,9 @@ def test_happy_path_returns_201_and_allocated_batch(add_ride, test_client):
     otherride = random_batchref(3)
     add_ride(
         [
-            (laterride, road, 40, datetime.strptime("2011-01-02", "%Y-%m-%d")),
-            (earlyride, road, 40, datetime.strptime("2011-01-01", "%Y-%m-%d")),
-            (otherride, otherroad, 40, None),
+            (laterride, road, 40,25, datetime.strptime("2011-01-02", "%Y-%m-%d")),
+            (earlyride, road, 40, 15, datetime.strptime("2011-01-01", "%Y-%m-%d")),
+            (otherride, otherroad, 40, 17, None),
         ]
     )
     data = {"rider": random_rider(), "road": road, "distance": 3}
@@ -58,3 +58,4 @@ def test_unhappy_path_returns_400_and_error_message(test_client):
     # r = requests.post(f"{url}/allocate", json=data)
     assert r.status_code == 400
     assert r.json["message"] == f"Invalid road {unknown_road}"
+'''

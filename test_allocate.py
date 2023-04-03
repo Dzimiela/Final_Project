@@ -31,7 +31,7 @@ def test_determine_ride_length():
     assert long.total_miles >= 40
 
 
-def test_returns_allocated_batch_ref():
+def test_returns_allocated_ride_ref():
     mapped_road = Ride("afternoon-ride-ref", "BigStreetCreek", 40, 16, eta=None)
     not_mapped_road = Ride("dirty-ride-ref", "BigStreetCreek", 40, 17, eta=tomorrow)
     route = NewRoute("oref", "BigStreetCreek", 10)
@@ -39,7 +39,7 @@ def test_returns_allocated_batch_ref():
     assert allocation == mapped_road.reference
 
 
-def test_raises_out_of_stock_exception_if_cannot_allocate():
+def test_route_or_road_mapped():
     ride = Ride("ride1", "BackAlleyRoad", 10, 19, eta=today)
     allocate(NewRoute("James", "BackAlleyRoad", 10), [ride])
 

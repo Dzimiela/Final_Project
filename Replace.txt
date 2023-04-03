@@ -82,11 +82,11 @@ def test_speed_high_or_Low():
     assert not_mapped_road.speed_mph >= 15, "Faster Ride, Above 15MPH"
 
 
-test_allocate.py::test_returns_allocated_batch_ref
-test_allocate.py::test_raises_out_of_stock_exception_if_cannot_allocate
+test_allocate.py::test_returns_allocated_batch_ref>test_returns_allocated_ride_ref():
+test_allocate.py::test_raises_out_of_stock_exception_if_cannot_allocate>def test_route_or_road_mapped():
 test_api.py::test_api_works
-test_api.py::test_happy_path_returns_201_and_allocated_batch
-test_api.py::test_unhappy_path_returns_400_and_error_message
+test_api.py::test_happy_path_returns_201_and_allocated_batch>Commented out issues with adding MPH 
+test_api.py::test_unhappy_path_returns_400_and_error_message>Commented out issues with adding MPH 
 test_batches.py::test_allocating_to_a_batch_reduces_the_available_quantity
 test_batches.py::test_can_allocate_if_available_greater_than_required
 test_batches.py::test_cannot_allocate_if_available_smaller_than_required

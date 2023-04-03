@@ -64,10 +64,10 @@ def add_ride(session):
 
     def _add_stock(routes):
         print(routes)
-        for ref, road, distance, eta in routes:
+        for ref, road, distance, speed, eta in routes:
             session.execute(
                 insert(rides).values(
-                    reference=ref, road=road, miles=distance, eta=eta
+                    reference=ref, road=road, miles=distance, mph=speed, eta=eta
                 )
             )
             batch_id = session.scalars(
