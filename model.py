@@ -25,11 +25,12 @@ class NewRoute:
 
 
 class Ride:
-    def __init__(self, ref: str, road: str, distance: int, eta: Optional[date]):
+    def __init__(self, ref: str, road: str, distance: int, speed: int, eta: Optional[date]):
         self.reference = ref
         self.road = road
         self.eta = eta
         self.miles = distance
+        self.mph = speed
         self._allocations = set()  # type: Set[NewRoute]
 
     def __repr__(self):
@@ -65,6 +66,10 @@ class Ride:
     @property
     def total_miles(self) -> int:
         return self.miles - self.allocated_quantity
+    
+    @property
+    def speed_mph(self) -> int:
+        return self.mph - self.allocated_quantity
 
     def can_allocate(self, route: NewRoute) -> bool:
         return self.road == route.road and self.total_miles >= route.distance

@@ -53,3 +53,54 @@ latest>long
 add_stock>add_ride
 RUSTY-SOAPDISH>DogSquatRoad
 GENERIC-SOFA>HairyCatRoad
+in-stock-ride>afternoon-ride
+shipment-ride>dirty-ride
+
+
+test_allocate.py::test_prefers_earlier_batches>
+def test_determine_ride_length():
+    short = Ride("speedy-ride", "RoubaixStreet", 14, eta=today)
+    medium = Ride("normal-ride", "RoubaixStreet", 37, eta=tomorrow)
+    long = Ride("slow-ride", "RoubaixStreet", 49, eta=later)
+    route = NewRoute("James", "RoubaixStreet", 10)
+
+    allocate(route, [medium, short, long])
+
+    assert short.total_miles < 15
+    assert medium.total_miles >=15 or medium.total_miles <=39
+    assert long.total_miles >= 40
+
+test_allocate.py::test_prefers_current_stock_batches_to_shipments
+def test_speed_high_or_Low():
+    mapped_road = Ride("afternoon-ride", "FlandersRd", 35, 13, eta=today)
+    not_mapped_road = Ride("dirty-ride", "FlandersRd", 34, 25, eta=tomorrow)
+    route = NewRoute("oref", "FlandersRd", 10)
+
+    allocate(route, [mapped_road, not_mapped_road])
+
+    assert mapped_road.speed_mph <= 15, "Slower Ride, below 15MPH"
+    assert not_mapped_road.speed_mph >= 15, "Faster Ride, Above 15MPH"
+
+
+test_allocate.py::test_returns_allocated_batch_ref
+test_allocate.py::test_raises_out_of_stock_exception_if_cannot_allocate
+test_api.py::test_api_works
+test_api.py::test_happy_path_returns_201_and_allocated_batch
+test_api.py::test_unhappy_path_returns_400_and_error_message
+test_batches.py::test_allocating_to_a_batch_reduces_the_available_quantity
+test_batches.py::test_can_allocate_if_available_greater_than_required
+test_batches.py::test_cannot_allocate_if_available_smaller_than_required
+test_batches.py::test_can_allocate_if_available_equal_to_required
+test_batches.py::test_cannot_allocate_if_roads_do_not_match
+test_batches.py::test_allocation_is_idempotent
+test_batches.py::test_deallocate
+test_batches.py::test_can_only_deallocate_allocated_lines
+test_orm.py::test_orderline_mapper_can_load_lines
+test_orm.py::test_orderline_mapper_can_save_lines
+test_orm.py::test_retrieving_batches
+test_orm.py::test_saving_batches
+test_orm.py::test_saving_allocations
+test_orm.py::test_retrieving_allocations
+test_repository.py::test_repository_can_save_a_batch
+test_repository.py::test_repository_can_retrieve_a_batch_with_allocations                       
+test_services.py::test_returns_allocation                                                       test_services.py::test_error_for_invalid_road                                                   test_services.py::test_commits
