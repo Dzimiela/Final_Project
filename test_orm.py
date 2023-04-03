@@ -11,16 +11,16 @@ def test_orderline_mapper_can_load_lines(session):
 
     session.execute(
         text(
-            "INSERT INTO new_routes (rider, road, distance) VALUES "
-            '("James", "HWY1863", 12),'
-            '("James", "HWY46", 13),'
-            '("Steve", "BlueCreekRd", 14)'
+            "INSERT INTO new_routes (rider, road, distance, mph) VALUES "
+            '("James", "HWY1863", 12, 20),'
+            '("James", "HWY46", 13, 21),'
+            '("Steve", "BlueCreekRd", 14, 22)'
         )
     )
     expected = [
-        model.NewRoute("James", "HWY1863", 12),
-        model.NewRoute("James", "HWY46", 13),
-        model.NewRoute("Steve", "BlueCreekRd", 14),
+        model.NewRoute("James", "HWY1863", 12, 20),
+        model.NewRoute("James", "HWY46", 13, 21),
+        model.NewRoute("Steve", "BlueCreekRd", 14, 22),
     ]
     # assert session.query(model.NewRoute).all() == expected
     outcome = session.scalars(select(model.NewRoute)).all()
@@ -33,12 +33,12 @@ def test_orderline_mapper_can_save_lines(session):
     # delete all records first
     session.execute(delete(model.NewRoute))
 
-    new_line = model.NewRoute("James", "RiverRd", 12)
+    new_line = model.NewRoute("James", "RiverRd", 30, 12)
     session.add(new_line)
     session.commit()
 
-    rows = list(session.execute(text('SELECT rider, road, distance FROM "new_routes"')))
-    assert rows == [("James", "RiverRd", 12)]
+    rows = list(session.execute(text('SELECT rider, road, distance, mph, FROM "new_routes"')))
+    assert rows == [("James", "RiverRd", 30, 12)]
 
     session.close()
 
@@ -48,19 +48,19 @@ def test_retrieving_batches(session):
     session.execute(delete(model.Ride))
     session.execute(
         text(
-            "INSERT INTO rides (reference, road, miles, eta)"
-            ' VALUES ("ride1", "road1", 40, null)'
+            "INSERT INTO rides (reference, road, miles, mph, eta)"
+            ' VALUES ("ride1", "road1", 40, 23, null)'
         )
     )
     session.execute(
         text(
-            "INSERT INTO rides (reference, road, miles, eta)"
-            ' VALUES ("ride2", "road2", 200, "2011-04-11")'
+            "INSERT INTO rides (reference, road, miles, mph, eta)"
+            ' VALUES ("ride2", "road2", 200, 23, "2011-04-11")'
         )
     )
     expected = [
-        model.Ride("ride1", "road1", 40, eta=None),
-        model.Ride("ride2", "road2", 200, eta=date(2011, 4, 11)),
+        model.Ride("ride1", "road1", 40, 23, eta=None),
+        model.Ride("ride2", "road2", 200, 23, eta=date(2011, 4, 11)),
     ]
 
     assert session.query(model.Ride).all() == expected
@@ -71,11 +71,11 @@ def test_retrieving_batches(session):
 def test_saving_batches(session):
     # delete all records first
     session.execute(delete(model.Ride))
-    ride = model.Ride("ride1", "road1", 40, eta=None)
+    ride = model.Ride("ride1", "road1", 40, 22, eta=None)
     session.add(ride)
     session.commit()
     rows = session.execute(
-        text('SELECT reference, road, miles, eta FROM "rides"')
+        text('SELECT reference, road, miles, mph, eta FROM "rides"')
     )
     assert list(rows) == [("ride1", "road1", 40, None)]
 
@@ -86,8 +86,8 @@ def test_saving_allocations(session):
     # delete all records first
     session.execute(delete(model.Ride))
     session.execute(delete(model.NewRoute))
-    ride = model.Ride("ride1", "road1", 40, eta=None)
-    route = model.NewRoute("James", "road1", 10)
+    ride = model.Ride("ride1", "road1", 40, 22, eta=None)
+    route = model.NewRoute("James", "road1", 25, 10)
     ride.allocate(route)
     session.add(ride)
     session.commit()
@@ -107,7 +107,7 @@ def test_retrieving_allocations(session):
     session.execute(delete(model.NewRoute))
     session.execute(
         text(
-            'INSERT INTO new_routes (rider, road, distance) VALUES ("James", "road1", 12)'
+            'INSERT INTO new_routes (rider, road, distance, mph) VALUES ("James", "road1", 33, 12)'
         )
     )
     [[olid]] = session.execute(
@@ -116,8 +116,8 @@ def test_retrieving_allocations(session):
     )
     session.execute(
         text(
-            "INSERT INTO rides (reference, road, miles, eta)"
-            ' VALUES ("ride1", "road1", 40, null)'
+            "INSERT INTO rides (reference, road, miles, mph, eta)"
+            ' VALUES ("ride1", "road1", 40, 19, null)'
         )
     )
     [[bid]] = session.execute(

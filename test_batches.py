@@ -33,9 +33,9 @@ def test_can_allocate_if_available_equal_to_required():
     assert ride.can_allocate(route)
 
 
-def test_cannot_allocate_if_roads_do_not_match():
-    ride = Ride("ride-001", "COLD-RIDE", 40, eta=None)
-    different_road_line = NewRoute("order-123", "SUNDAY_FUNDAY_RIDE", 16, 10)
+def test_if_roads_do_not_match():
+    ride = Ride("ride-001", "COLD-RIDE", 40, 20, eta=None)
+    different_road_line = NewRoute("order-123", "SUNDAY_FUNDAY_RIDE", 10)
     assert ride.can_allocate(different_road_line) is False
 
 

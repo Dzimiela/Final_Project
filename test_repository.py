@@ -10,16 +10,16 @@ def test_repository_can_save_a_batch(session):
     # delete all records first
     session.execute(delete(model.Ride))
     session.execute(delete(model.NewRoute))
-    ride = model.Ride("ride1", "DogSquatRoad", 40, eta=None)
+    ride = model.Ride("ride1", "DogSquatRoad", 40, 18, eta=None)
 
     repo = repository.SqlAlchemyRepository(session)
     repo.add(ride)
     session.commit()
 
     rows = session.execute(
-        text('SELECT reference, road, miles, eta FROM "rides"')
+        text('SELECT reference, road, miles, mph, eta FROM "rides"')
     )
-    assert list(rows) == [("ride1", "DogSquatRoad", 40, None)]
+    assert list(rows) == [("ride1", "DogSquatRoad", 40, 18, None)]
 
     session.commit()
 
@@ -75,10 +75,10 @@ def test_repository_can_retrieve_a_batch_with_allocations(session):
     repo = repository.SqlAlchemyRepository(session)
     retrieved = repo.get("ride1")
 
-    expected = model.Ride("ride1", "HairyCatRoad", 40, eta=None)
+    expected = model.Ride("ride1", "HairyCatRoad", 40, 16, eta=None)
     assert retrieved == expected  # Ride.__eq__ only compares reference
     assert retrieved.road == expected.road
     assert retrieved.miles == expected.miles
     assert retrieved._allocations == {
-        model.NewRoute("James", "HairyCatRoad", 12),
+        model.NewRoute("James", "HairyCatRoad", 12, 15),
     }
