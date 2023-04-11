@@ -36,7 +36,6 @@ allocations = Table(
     Column("batch_id", ForeignKey("rides.id")),
 )
 
-
 def start_mappers():
     lines_mapper = mapper_registry.map_imperatively(model.NewRoute, new_routes)
     mapper_registry.map_imperatively(
