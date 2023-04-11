@@ -1,4 +1,15 @@
 # Final_Project
+
+## Requirements
+
+`python -m venv .venv`
+pip install pytest 
+pip install pytest sqlalchemy
+pip install -r requirements.txt
+
+
+
+I am using a SQLite file database for the examples rather than Postgres.
 Class GitHub: https://github.com/ahuimanu/CIDM6330
 
 P&G: https://www.cosmicpython.com/book/introduction.html

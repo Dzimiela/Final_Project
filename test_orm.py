@@ -12,15 +12,15 @@ def test_orderline_mapper_can_load_lines(session):
     session.execute(
         text(
             "INSERT INTO new_routes (rider, road, distance, mph) VALUES "
-            '("James", "HWY1863", 12, 20),'
-            '("James", "HWY46", 13, 21),'
-            '("Steve", "BlueCreekRd", 14, 22)'
+            '("James", "HWY1863", 21),'
+            '("James", "HWY46", 20),'
+            '("Steve", "BlueCreekRd", 18)'
         )
     )
     expected = [
-        model.NewRoute("James", "HWY1863", 12, 20),
-        model.NewRoute("James", "HWY46", 13, 21),
-        model.NewRoute("Steve", "BlueCreekRd", 14, 22),
+        model.NewRoute("James", "HWY1863", 21),
+        model.NewRoute("James", "HWY46", 20),
+        model.NewRoute("Steve", "BlueCreekRd", 18),
     ]
     # assert session.query(model.NewRoute).all() == expected
     outcome = session.scalars(select(model.NewRoute)).all()

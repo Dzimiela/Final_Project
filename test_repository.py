@@ -27,7 +27,7 @@ def test_repository_can_save_a_batch(session):
 def insert_order_line(session):
     session.execute(
         text(
-            "INSERT INTO new_routes (rider, road, distance)"
+            "INSERT INTO new_routes (rider, road, distance, mph)"
             ' VALUES ("James", "HairyCatRoad", 12)'
         )
     )
