@@ -28,7 +28,7 @@ def insert_order_line(session):
     session.execute(
         text(
             "INSERT INTO new_routes (rider, road, distance, mph)"
-            ' VALUES ("James", "HairyCatRoad", 12)'
+            ' VALUES ("James", "HairyCatRoad", 20, 12)'
         )
     )
     [[orderline_id]] = session.execute(

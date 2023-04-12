@@ -22,7 +22,7 @@ class NewRoute:
     rider: str
     road: str
     distance: int
-
+   
 
 class Ride:
     def __init__(self, ref: str, road: str, distance: int, speed: int, eta: Optional[date]):

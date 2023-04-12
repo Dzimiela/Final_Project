@@ -23,6 +23,7 @@ def allocate_endpoint():
         request.json["rider"],
         request.json["road"],
         request.json["distance"],
+        request.json["mph"],
     )
 
     try:
