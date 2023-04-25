@@ -45,3 +45,4 @@ def test_route_or_road_mapped():
 
     with pytest.raises(RideCancelled, match="BackAlleyRoad"):
         allocate(NewRoute("Steve", "BackAlleyRoad", 1), [ride])
+#

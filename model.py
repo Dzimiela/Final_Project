@@ -73,3 +73,4 @@ class Ride:
 
     def can_allocate(self, route: NewRoute) -> bool:
         return self.road == route.road and self.total_miles >= route.distance
+#

@@ -51,3 +51,4 @@ def test_commits():
 
     services.allocate(route, repo, session)
     assert session.committed is True
+#
